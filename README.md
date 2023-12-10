@@ -138,8 +138,8 @@ Many well-known algorithms are implemented in `Graph` :
 
 - `breadthFirstSearch`, gives an iterator to browse nodes from closest to a given origin node to furthest. Note that
   this does not mean iterating on every node of the graph.
-- `depthFirstSearch`, similar to `breadthFirstSearch` but the next node to iterate on is one further away
-  --- `connectedComponents`, finds the connected sets of nodes in a graph.
+- `depthFirstSearch`, similar to `breadthFirstSearch` but the next node to iterate on is one furthest away.
+- `connectedComponents`, finds the connected sets of nodes in a graph.
 - `findPath`, runs the **A\* algorithm** to find a path between two nodes.
 - `shortestPath`, runs **Dijkstra's algorithm** to find the shortest path between two nodes.
 - `stronglyConnectedComponents`, runs **Tarjan's algorithm** to find all groups of strongly connected nodes.
