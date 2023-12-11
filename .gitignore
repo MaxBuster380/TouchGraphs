@@ -12,6 +12,7 @@ target/
 *.iws
 *.iml
 *.ipr
+.idea/icon.svg
 
 ### Eclipse ###
 .apt_generated
