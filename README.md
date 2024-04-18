@@ -101,19 +101,17 @@ fun main() {
         "apple", "rice", "egg", "pineapple", "gummy", "cocoa", "pepper", "cup"
     )
 
-    val wordsGraph = object : Graph<String>() {
-
-        override fun successors(tail: String): Set<String> {
-            return words.filter {
-                tail.last() == it.first()
+  val wordsGraph = Graph.create(
+    successorsFunction = {
+      words.filter {
+        it.last() == it.first()
             }.toSet()
-        }
+    },
 
-        // Override not necessary but recommended.
-        override fun areJoined(tail: String, head: String): Boolean {
-            return tail.last() == head.first()
+    areJoinedFunction = { tail: String, head: String ->
+      tail.last() == head.first()
         }
-    }
+  )
 
   // ...
 }
