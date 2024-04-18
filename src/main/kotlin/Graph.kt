@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2023 MaxBuster380
+ * Copyright (c) 2024 MaxBuster380
  *
  * This is the "Graph.kt" file from the TouchGraphs project.
  *
@@ -45,6 +45,74 @@ import kotlin.math.min
 abstract class Graph<Node> {
     companion object {
         private const val DEFAULT_MAXIMUM_SEARCH_COUNT = 1_000
+
+        /**
+         * Creates a graph object from a successors function.
+         *
+         * @param successorsFunction Function that tallies all nodes that are successors of a given node.
+         * @param areJoinedFunction Function that checks if a node is a successor of another. Optional parameter.
+         * @param edgeWeightFunction Function that gets the weight of a given edge. Optional parameter, 1.0 for all existing edges by default.
+         *
+         * @return a graph object with the specified definitions.
+         *
+         * Template :
+         *
+         * ```kotlin
+         * val syracuseGraph = Graph.create<Int>(
+         *         {
+         *             if (it % 2 == 0) {
+         *                 setOf( it / 2 )
+         *             } else {
+         *                 setOf( 3 * it + 1 )
+         *             }
+         *         }
+         *     )
+         * ```
+         *
+         * Expanded Template :
+         *
+         * ```kotlin
+         * val syracuseGraph = Graph.create(
+         *
+         *         successorsFunction = {
+         *
+         *             if (it % 2 == 0) {
+         *                 setOf( it / 2 )
+         *             } else {
+         *                 setOf( 3 * it + 1 )
+         *             }
+         *         },
+         *
+         *         areJoinedFunction = { tail : Int, head : Int ->
+         *
+         *             if (tail % 2 == 0) {
+         *                 head == tail / 2
+         *             } else {
+         *                 head == 3 * tail + 1
+         *             }
+         *         },
+         *
+         *         edgeWeightFunction = { tail : Int, head : Int -> { 1.0 }
+         *
+         *     )
+         * ```
+         */
+        fun <Node> create(
+            successorsFunction: (Node) -> Set<Node>,
+            areJoinedFunction: (Node, Node) -> Boolean = { tail: Node, head: Node ->
+                successorsFunction(tail).contains(
+                    head
+                )
+            },
+            edgeWeightFunction: (Node, Node) -> Double = { _: Node, _: Node -> 1.0 }
+        ): Graph<Node> {
+
+            return object : Graph<Node>() {
+                override fun successors(tail: Node): Set<Node> = successorsFunction(tail)
+                override fun areJoined(tail: Node, head: Node): Boolean = areJoinedFunction(tail, head)
+                override fun edgeWeight(tail: Node, head: Node): Double = edgeWeightFunction(tail, head)
+            }
+        }
     }
 
     ///////////////////////////////////// GRAPH STRUCTURE METHODS //////////////////////////////////////
@@ -309,15 +377,15 @@ abstract class Graph<Node> {
         var found = false
 
         while (heap.isNotEmpty() && mapping.size < maximumSearchCount) {
+
             val currentTile = heap.pop()
 
             val currentNode = currentTile.first
             val currentDistance = currentTile.second
             val currentPreviousNode = currentTile.third
 
-            if (currentNode in mapping.keys) {
-                continue
-            }
+            if (currentNode in mapping.keys) continue
+
             mapping[currentNode] = Pair(currentDistance, currentPreviousNode)
             if (currentNode == destination) {
                 found = true
@@ -325,11 +393,13 @@ abstract class Graph<Node> {
             }
 
             val nextNodes = successors(currentNode)
+
             for (nextNode in nextNodes) {
+
                 val edgeWeight = edgeWeight(currentNode, nextNode)
-                if (edgeWeight < 0) {
-                    throw IllegalStateException("Found an edge of negative length : |(${currentNode}, ${nextNode})| = $edgeWeight")
-                }
+
+                assert(edgeWeight >= 0) { "Found an edge of negative length : |(${currentNode}, ${nextNode})| = $edgeWeight" }
+
                 val newDistance = currentDistance + edgeWeight + heuristic(nextNode)
 
                 heap.insert(Triple(nextNode, newDistance, currentNode))
