@@ -33,7 +33,7 @@ allprojects {
 
 ```gradle
 dependencies {
-    implementation 'com.github.MaxBuster380:TouchGraphs:alpha-1.0.0'
+    implementation 'com.github.MaxBuster380:TouchGraphs:alpha-1.2.0'
 }
 ```
 
@@ -54,7 +54,7 @@ In `pom.xml` :
 <dependency>
     <groupId>com.github.MaxBuster380</groupId>
     <artifactId>TouchGraphs</artifactId>
-    <version>alpha-1.0.0</version>
+  <version>alpha-1.2.0</version>
 </dependency>
 ```
 
@@ -141,3 +141,4 @@ Many well-known algorithms are implemented in `Graph` :
 - `findPath`, runs the **A\* algorithm** to find a path between two nodes.
 - `shortestPath`, runs **Dijkstra's algorithm** to find the shortest path between two nodes.
 - `stronglyConnectedComponents`, runs **Tarjan's algorithm** to find all groups of strongly connected nodes.
+- `maximalCliques`, runs the **Bron-Kerbosch algorithm" to find all maximal cliques.

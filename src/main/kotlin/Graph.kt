@@ -552,5 +552,55 @@ abstract class Graph<Node> {
 
     }
 
+    /**
+     * In a given set of `nodes`, finds its maximal cliques using the **pivot Bron-Kerbosch algorithm.**
+     * A clique is a complete subset of a graph, where all nodes are connected to one another.
+     * A maximal clique is a clique to which no other node can be added.
+     *
+     * [Related Wikipedia Article](https://en.wikipedia.org/wiki/Clique_(graph_theory))
+     *
+     * @param nodes Set of nodes to work on.
+     *
+     * @return A set of maximal cliques among the input nodes, where a clique is a set of nodes.
+     */
+    fun maximalCliques(
+        nodes: Set<Node>
+    ): Set<Set<Node>> {
+
+        fun pivot(possibilities: Set<Node>): Node {
+            return possibilities.maxBy { successors(it).size }
+        }
+
+        fun bronKerbosch2(r: Set<Node>, pInput: Set<Node>, xInput: Set<Node>): Set<Set<Node>> {
+
+            if (pInput.isEmpty() && xInput.isEmpty())
+                return setOf(r)
+
+            val u = pivot(pInput union xInput)
+
+            val p = pInput.toMutableSet()
+            val x = xInput.toMutableSet()
+
+            val res = mutableSetOf<Set<Node>>()
+
+            val neighborsOfU = successors(u)
+            val iteratedNodes = p.toMutableSet()
+            iteratedNodes.removeAll(neighborsOfU)
+            for (v in iteratedNodes) {
+
+                val neighborsOfV = successors(v)
+                val subResult = bronKerbosch2(r union setOf(v), p intersect neighborsOfV, x intersect neighborsOfV)
+                res.addAll(subResult)
+
+                p -= v
+                x += v
+            }
+
+            return res
+        }
+
+        return bronKerbosch2(setOf(), nodes, setOf())
+    }
+
     //////////////////////////////////////// /GRAPH ALGORITHMS /////////////////////////////////////////
 }
