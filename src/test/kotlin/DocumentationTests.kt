@@ -3,7 +3,7 @@
  *
  * Copyright (c) 2024 MaxBuster380
  *
- * This is the "CliqueTest.kt" file from the TouchGraphs project.
+ * This is the "DocumentationTests.kt" file from the TouchGraphs project.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,14 +25,13 @@
  */
 
 import kotlin.test.Test
-import kotlin.test.assertContains
 
 /*
  * MIT License
  *
  * Copyright (c) 2024 MaxBuster380
  *
- * This is the "CliqueTest.kt" file from the TouchGraphs project.
+ * This is the "DocumentationTests.kt" file from the TouchGraphs project.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -53,39 +52,37 @@ import kotlin.test.assertContains
  * SOFTWARE.
  */
 
-class CliqueTest {
+class DocumentationTests {
 
     @Test
-    fun test1() {
+    fun createGraph() {
 
-        /*
+        val syracuseGraph1 = graphOf<Int>(
+            {
+                if (it % 2 == 0) {
+                    setOf(it / 2)
+                } else {
+                    setOf(3 * it + 1)
+                }
+            }
+        )
 
-        6 - 4 - 5 -- 1
-            |   |   /
-            3 - 2 -
-
-         */
-
-        val successors = hashMapOf<Int, Set<Int>>()
-        successors[1] = setOf(2, 5)
-        successors[2] = setOf(1, 3, 5)
-        successors[3] = setOf(2, 4)
-        successors[4] = setOf(3, 5, 6)
-        successors[5] = setOf(1, 2, 4)
-        successors[6] = setOf(4)
-
-        val graph = graphOf<Int>({
-            successors[it]!!
-        })
-
-        val cliques = graph.maximalCliques(setOf(1, 2, 3, 4, 5, 6))
-
-        assertContains(cliques, setOf(4, 6))
-        assertContains(cliques, setOf(3, 4))
-        assertContains(cliques, setOf(4, 5))
-        assertContains(cliques, setOf(2, 3))
-        assertContains(cliques, setOf(1, 2, 5))
-
-        println(cliques)
+        val syracuseGraph2 = graphOf(
+            successors = {
+                if (it % 2 == 0) {
+                    setOf(it / 2)
+                } else {
+                    setOf(3 * it + 1)
+                }
+            },
+            areJoined = { tail: Int, head: Int ->
+                if (tail % 2 == 0) {
+                    head == tail / 2
+                } else {
+                    head == 3 * tail + 1
+                }
+            },
+            edgeWeight = { _: Int, _: Int -> 1.0 }
+        )
     }
 }

@@ -41,3 +41,4 @@ build/
 
 Main.kt
 tarjan.md
+/.idea/scala_compiler.xml

@@ -43,76 +43,6 @@ import kotlin.math.min
  * @see Edge
  */
 abstract class Graph<Node> {
-    companion object {
-
-        /**
-         * Creates a graph object from a successors function.
-         *
-         * @param successors Function that tallies all nodes that are successors of a given node.
-         * @param areJoined Function that checks if a node is a successor of another. Optional parameter.
-         * @param edgeWeight Function that gets the weight of a given edge. Optional parameter, 1.0 for all existing edges by default.
-         *
-         * @return a graph object with the specified definitions.
-         *
-         * Template :
-         *
-         * ```kotlin
-         * val syracuseGraph = Graph.create<Int>(
-         *         {
-         *             if (it % 2 == 0) {
-         *                 setOf( it / 2 )
-         *             } else {
-         *                 setOf( 3 * it + 1 )
-         *             }
-         *         }
-         *     )
-         * ```
-         *
-         * Expanded Template :
-         *
-         * ```kotlin
-         * val syracuseGraph = Graph.create(
-         *
-         *         successorsFunction = {
-         *
-         *             if (it % 2 == 0) {
-         *                 setOf( it / 2 )
-         *             } else {
-         *                 setOf( 3 * it + 1 )
-         *             }
-         *         },
-         *
-         *         areJoinedFunction = { tail : Int, head : Int ->
-         *
-         *             if (tail % 2 == 0) {
-         *                 head == tail / 2
-         *             } else {
-         *                 head == 3 * tail + 1
-         *             }
-         *         },
-         *
-         *         edgeWeightFunction = { tail : Int, head : Int -> { 1.0 }
-         *
-         *     )
-         * ```
-         */
-        fun <Node> create(
-            successors: (Node) -> Set<Node>,
-            areJoined: (Node, Node) -> Boolean = { tail: Node, head: Node ->
-                successors(tail).contains(
-                    head
-                )
-            },
-            edgeWeight: (Node, Node) -> Double = { _: Node, _: Node -> 1.0 }
-        ): Graph<Node> {
-
-            return object : Graph<Node>() {
-                override fun successors(tail: Node): Set<Node> = successors(tail)
-                override fun areJoined(tail: Node, head: Node): Boolean = areJoined(tail, head)
-                override fun edgeWeight(tail: Node, head: Node): Double = edgeWeight(tail, head)
-            }
-        }
-    }
 
     /**
      * Tallies all nodes that are successors of a given node.
@@ -150,6 +80,64 @@ abstract class Graph<Node> {
         }
 
         return 1.0
+    }
+}
+
+/**
+ * Creates a graph object from a successors function.
+ *
+ * @param successors Function that tallies all nodes that are successors of a given node.
+ * @param areJoined Function that checks if a node is a successor of another. Optional parameter.
+ * @param edgeWeight Function that gets the weight of a given edge. Optional parameter, 1.0 for all existing edges by default.
+ *
+ * @return a graph object with the specified definitions.
+ *
+ * Template :
+ *
+ * ```kotlin
+ * val syracuseGraph = graphOf<Int>(
+ *     {
+ *         if (it % 2 == 0) {
+ *             setOf( it / 2 )
+ *         } else {
+ *             setOf( 3 * it + 1 )
+ *         }
+ *     }
+ * )
+ * ```
+ *
+ * Expanded Template :
+ *
+ * ```kotlin
+ * val syracuseGraph = graphOf(
+ *     successors = {
+ *         if (it % 2 == 0) {
+ *             setOf(it / 2)
+ *         } else {
+ *             setOf(3 * it + 1)
+ *         }
+ *     },
+ *     areJoined = { tail : Int, head : Int ->
+ *         if (tail % 2 == 0) {
+ *             head == tail / 2
+ *         } else {
+ *             head == 3 * tail + 1
+ *         }
+ *     },
+ *      edgeWeight = { _ : Int, _ : Int ->  1.0 }
+ * )
+ * ```
+ */
+fun <Node> graphOf(
+    successors: (Node) -> Set<Node>,
+    areJoined: (Node, Node) -> Boolean = { tail: Node, head: Node -> successors(tail).contains(head) },
+    edgeWeight: (Node, Node) -> Double = { _: Node, _: Node -> 1.0 }
+): Graph<Node> {
+
+    return object : Graph<Node>() {
+        override fun successors(tail: Node): Set<Node> = successors(tail)
+        override fun areJoined(tail: Node, head: Node): Boolean = areJoined(tail, head)
+        override fun edgeWeight(tail: Node, head: Node): Double = edgeWeight(tail, head)
     }
 }
 
