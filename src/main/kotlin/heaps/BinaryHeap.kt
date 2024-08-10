@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2023 MaxBuster380
+ * Copyright (c) 2024 MaxBuster380
  *
  * This is the "BinaryHeap.kt" file from the TouchGraphs project.
  *
@@ -34,7 +34,7 @@ package heaps
  *
  * [Related Wikipedia Article](https://en.wikipedia.org/wiki/Binary_heap)
  */
-abstract class BinaryHeap<T> : Heap<T> {
+internal abstract class BinaryHeap<T> : Heap<T> {
     private val list = mutableListOf<T>()
 
     override val size: Int

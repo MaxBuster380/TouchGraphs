@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2023 MaxBuster380
+ * Copyright (c) 2024 MaxBuster380
  *
  * This is the "Heap.kt" file from the TouchGraphs project.
  *
@@ -33,7 +33,7 @@ package heaps
  *
  * [Related Wikipedia Article](https://en.wikipedia.org/wiki/Heap_(data_structure))
  */
-interface Heap<T> : Collection<T> {
+internal sealed interface Heap<T> : Collection<T> {
 
     /**
      * Compares two elements of the heap and determines
