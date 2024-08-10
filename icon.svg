@@ -1,7 +1,7 @@
 <!--
   - MIT License
   -
-  - Copyright (c) 2023 MaxBuster380
+  - Copyright (c) 2024 MaxBuster380
   -
   - This is the "icon.svg" file from the TouchGraphs project.
   -
@@ -28,10 +28,17 @@
      width="180" height="180"
      xmlns="http://www.w3.org/2000/svg">
 
-    <line x1="40" y1="140" x2="140" y2="40" stroke="#a8a8a8" stroke-width="10"/>
+    <defs>
+        <linearGradient id="nodeGradient" x1="0%" y1="0%" x2="90%" y2="90%">
+            <stop offset="0%" stop-color="#2ad84c"/>
+            <stop offset="100%" stop-color="#1a486c"/>
+        </linearGradient>
+    </defs>
 
-    <circle cx="40" cy="140" r="40" fill="#2aa84c"/>
+    <line x1="40" y1="140" x2="140" y2="40" stroke="#405055" stroke-width="10"/>
 
-    <circle cx="140" cy="40" r="40" fill="#2aa84c"/>
+    <circle cx="40" cy="140" r="40" fill="url(#nodeGradient)"/>
+
+    <circle cx="140" cy="40" r="40" fill="url(#nodeGradient)"/>
 
 </svg>
