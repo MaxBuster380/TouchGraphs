@@ -49,9 +49,9 @@ abstract class Graph<Node> {
         /**
          * Creates a graph object from a successors function.
          *
-         * @param successorsFunction Function that tallies all nodes that are successors of a given node.
-         * @param areJoinedFunction Function that checks if a node is a successor of another. Optional parameter.
-         * @param edgeWeightFunction Function that gets the weight of a given edge. Optional parameter, 1.0 for all existing edges by default.
+         * @param successors Function that tallies all nodes that are successors of a given node.
+         * @param areJoined Function that checks if a node is a successor of another. Optional parameter.
+         * @param edgeWeight Function that gets the weight of a given edge. Optional parameter, 1.0 for all existing edges by default.
          *
          * @return a graph object with the specified definitions.
          *
@@ -98,19 +98,19 @@ abstract class Graph<Node> {
          * ```
          */
         fun <Node> create(
-            successorsFunction: (Node) -> Set<Node>,
-            areJoinedFunction: (Node, Node) -> Boolean = { tail: Node, head: Node ->
-                successorsFunction(tail).contains(
+            successors: (Node) -> Set<Node>,
+            areJoined: (Node, Node) -> Boolean = { tail: Node, head: Node ->
+                successors(tail).contains(
                     head
                 )
             },
-            edgeWeightFunction: (Node, Node) -> Double = { _: Node, _: Node -> 1.0 }
+            edgeWeight: (Node, Node) -> Double = { _: Node, _: Node -> 1.0 }
         ): Graph<Node> {
 
             return object : Graph<Node>() {
-                override fun successors(tail: Node): Set<Node> = successorsFunction(tail)
-                override fun areJoined(tail: Node, head: Node): Boolean = areJoinedFunction(tail, head)
-                override fun edgeWeight(tail: Node, head: Node): Double = edgeWeightFunction(tail, head)
+                override fun successors(tail: Node): Set<Node> = successors(tail)
+                override fun areJoined(tail: Node, head: Node): Boolean = areJoined(tail, head)
+                override fun edgeWeight(tail: Node, head: Node): Double = edgeWeight(tail, head)
             }
         }
     }
