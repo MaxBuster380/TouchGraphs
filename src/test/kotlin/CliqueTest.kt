@@ -74,9 +74,9 @@ class CliqueTest {
         successors[5] = setOf(1, 2, 4)
         successors[6] = setOf(4)
 
-        val graph = graphOf<Int>({
+        val graph = graphOf<Int> {
             successors[it]!!
-        })
+        }
 
         val cliques = graph.maximalCliques(setOf(1, 2, 3, 4, 5, 6))
 

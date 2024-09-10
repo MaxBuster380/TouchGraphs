@@ -95,15 +95,13 @@ abstract class Graph<Node> {
  * Template :
  *
  * ```kotlin
- * val syracuseGraph = graphOf<Int>(
- *     {
- *         if (it % 2 == 0) {
- *             setOf( it / 2 )
- *         } else {
- *             setOf( 3 * it + 1 )
- *         }
+ * val syracuseGraph = graphOf<Int> {
+ *     if (it % 2 == 0) {
+ *         setOf(it / 2)
+ *     } else {
+ *         setOf(3 * it + 1)
  *     }
- * )
+ * }
  * ```
  *
  * Expanded Template :
@@ -117,26 +115,30 @@ abstract class Graph<Node> {
  *             setOf(3 * it + 1)
  *         }
  *     },
- *     areJoined = { tail : Int, head : Int ->
+ *     areJoined = { tail: Int, head: Int ->
  *         if (tail % 2 == 0) {
  *             head == tail / 2
  *         } else {
  *             head == 3 * tail + 1
  *         }
  *     },
- *      edgeWeight = { _ : Int, _ : Int ->  1.0 }
+ *     edgeWeight = { _: Int, _: Int -> 1.0 }
  * )
  * ```
  */
 fun <Node> graphOf(
+    areJoined: ((Node, Node) -> Boolean)? = null,
+    edgeWeight: (Node, Node) -> Double = { _: Node, _: Node -> 1.0 },
     successors: (Node) -> Set<Node>,
-    areJoined: (Node, Node) -> Boolean = { tail: Node, head: Node -> successors(tail).contains(head) },
-    edgeWeight: (Node, Node) -> Double = { _: Node, _: Node -> 1.0 }
 ): Graph<Node> {
 
     return object : Graph<Node>() {
+
+        private val realAreJoinedMethod = areJoined
+            ?: { tail: Node, head: Node -> successors(tail).contains(head) }
+
         override fun successors(tail: Node): Set<Node> = successors(tail)
-        override fun areJoined(tail: Node, head: Node): Boolean = areJoined(tail, head)
+        override fun areJoined(tail: Node, head: Node): Boolean = realAreJoinedMethod(tail, head)
         override fun edgeWeight(tail: Node, head: Node): Double = edgeWeight(tail, head)
     }
 }

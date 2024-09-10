@@ -57,15 +57,13 @@ class DocumentationTests {
     @Test
     fun createGraph() {
 
-        val syracuseGraph1 = graphOf<Int>(
-            {
-                if (it % 2 == 0) {
-                    setOf(it / 2)
-                } else {
-                    setOf(3 * it + 1)
-                }
+        val syracuseGraph1 = graphOf<Int> {
+            if (it % 2 == 0) {
+                setOf(it / 2)
+            } else {
+                setOf(3 * it + 1)
             }
-        )
+        }
 
         val syracuseGraph2 = graphOf(
             successors = {

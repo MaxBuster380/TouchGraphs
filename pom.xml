@@ -2,7 +2,7 @@
 <!--
   ~ MIT License
   ~
-  ~ Copyright (c) 2023 MaxBuster380
+  ~ Copyright (c) 2024 MaxBuster380
   ~
   ~ This is the "pom.xml" file from the TouchGraphs project.
   ~
@@ -32,7 +32,7 @@
 
     <artifactId>TouchGraphs</artifactId>
     <groupId>com.github.MaxBuster380</groupId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <packaging>jar</packaging>
 
     <name>consoleApp</name>
