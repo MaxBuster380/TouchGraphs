@@ -73,11 +73,31 @@ In `pom.xml` :
 
 ---
 
-## Documentation
+## Template
 
-### Create a Graph
+```kt
+fun main() {
 
-###  
+  val words = listOf(
+    "apple", "rice", "egg", "pineapple", "gummy", "cocoa", "pepper", "cup"
+  )
+
+  // Creates a graph where two words are linked if the first's last letter is the second's first
+  val wordsGraph = graphOf<String> { tail ->
+    words.filter { head ->
+      tail.last() == head.first()
+    }.toSet()
+  }
+
+  val start = "cocoa"
+  val end = "gummy"
+
+  val path = wordsGraph.findPath(start, end)
+
+  // Prints "Path from cocoa to gummy : [cocoa, apple, egg, gummy]"
+  println("Path from $start to $end : $path")
+}
+```
 
 ### Operations & Algorithms
 
